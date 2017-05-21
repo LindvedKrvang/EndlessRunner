@@ -2,6 +2,7 @@ package lindvedkrvang.endlessrunner.gui;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -59,5 +60,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void draw(Canvas canvas){
         super.draw(canvas);
         mSceneManager.draw(canvas);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        mSceneManager.receiveTouch(event);
+        return true;
     }
 }

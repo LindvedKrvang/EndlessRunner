@@ -76,7 +76,7 @@ public class GameLoopThread extends Thread{
                 iex.printStackTrace();
             }
 
-            //This is purely for calculating and printing the averageFPS. It's not necessary to make the gameLoop work.
+            /*//This is purely for calculating and printing the averageFPS. It's not necessary to make the gameLoop work.
             totalTime += System.nanoTime() - startTime;
             frameCount++;
             if(frameCount == MAX_FPS){
@@ -84,7 +84,7 @@ public class GameLoopThread extends Thread{
                 frameCount = 0;
                 totalTime = 0;
                 Log.d("AverageFPS", mAverageFPS + "");
-            }
+            }*/
         }
     }
 }

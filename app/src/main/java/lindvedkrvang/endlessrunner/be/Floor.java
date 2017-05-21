@@ -27,4 +27,8 @@ public class Floor implements IGameObject {
     public void update() {
 
     }
+
+    public Rect getRect(){
+        return mRect;
+    }
 }

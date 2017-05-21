@@ -13,28 +13,57 @@ import lindvedkrvang.endlessrunner.be.Player;
 public class GamePlayScene implements  IScene {
 
     private final int X_POSITION = Constants.SCREEN_WIDTH / 4;
+    private final int GRAVITY = 15;
+    private final int JUMP_SPEED = 20;
+    private final int JUMP_TIMER = 20;
+
+    private int mJumpTimer;
+
+    private GravityManager mGravityManager;
 
     private Player mPlayer;
     private Point mPlayerPoint;
 
     private Floor mFloor;
 
+    private boolean mIsJumping;
     private boolean mGameOver;
 
     public GamePlayScene(){
+        mGravityManager = new GravityManager();
+
         mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
         mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
 
-        //TODO RKL: Check if floor has no collision now.
         mFloor = new Floor(new Rect(0, 0, 0, 0), Color.BLUE);
 
+        mJumpTimer = 0;
+
         mGameOver = false;
+        mIsJumping = false;
     }
 
     @Override
     public void update() {
         if(!mGameOver){
             mPlayer.update(mPlayerPoint);
+
+            playerGravity();
+        }
+    }
+
+    private void playerGravity() {
+        if(!mIsJumping && mGravityManager.isPlayerNotTouchingFloor(mPlayer, mFloor)){
+            mPlayerPoint.set(mPlayerPoint.x, mPlayerPoint.y + GRAVITY);
+        }else if(mIsJumping){
+            mPlayerPoint.set(mPlayerPoint.x, mPlayerPoint.y - JUMP_SPEED);
+            mJumpTimer++;
+            if(mJumpTimer >= JUMP_TIMER){
+                mIsJumping = false;
+                mJumpTimer = 0;
+            }
+        }else{
+            mIsJumping = false;
         }
     }
 
@@ -53,6 +82,13 @@ public class GamePlayScene implements  IScene {
 
     @Override
     public void recieveTouch(MotionEvent event) {
-
+        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:{
+                if(!mIsJumping && !mGravityManager.isPlayerNotTouchingFloor(mPlayer, mFloor)){
+//                    mPlayerPoint.set(mPlayerPoint.x, mPlayerPoint.y - 200);
+                    mIsJumping = true;
+                }
+            }
+        }
     }
 }

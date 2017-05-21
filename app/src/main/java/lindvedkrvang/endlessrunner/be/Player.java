@@ -38,4 +38,5 @@ public class Player implements IGameObject {
     public Rect getRect(){
         return mRect;
     }
+
 }

@@ -27,7 +27,7 @@ public class SceneManager {
         mScenes.get(ACTIVE_SCENE).draw(canvas);
     }
 
-    public void recieveTouch(MotionEvent event){
+    public void receiveTouch(MotionEvent event){
         mScenes.get(ACTIVE_SCENE).recieveTouch(event);
     }
 }
