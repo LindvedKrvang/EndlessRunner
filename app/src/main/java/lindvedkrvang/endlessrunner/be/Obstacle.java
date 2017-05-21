@@ -38,4 +38,13 @@ public class Obstacle implements IGameObject {
     public Rect getRect(){
         return mRect;
     }
+
+    /**
+     * Checks if the obstacle intersects with the player.
+     * @param playerRect
+     * @return
+     */
+    public boolean collisionWithPlayer(Rect playerRect){
+        return mRect.intersects(playerRect.left, playerRect.top, playerRect.right, playerRect.bottom);
+    }
 }

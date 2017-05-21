@@ -31,8 +31,6 @@ public class GameLoopThread extends Thread{
         long startTime;
         long timeMillis;
         long waitTime;
-        int frameCount = 0;
-        long totalTime = 0;
         long targetTime = 1000 / MAX_FPS;
 
         while(mRunning){
@@ -77,6 +75,8 @@ public class GameLoopThread extends Thread{
             }
 
             /*//This is purely for calculating and printing the averageFPS. It's not necessary to make the gameLoop work.
+            int frameCount = 0;
+            long totalTime = 0;
             totalTime += System.nanoTime() - startTime;
             frameCount++;
             if(frameCount == MAX_FPS){
