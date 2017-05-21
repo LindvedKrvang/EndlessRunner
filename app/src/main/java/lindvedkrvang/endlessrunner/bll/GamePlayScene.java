@@ -15,7 +15,7 @@ public class GamePlayScene implements  IScene {
     private final int X_POSITION = Constants.SCREEN_WIDTH / 4;
     private final int GRAVITY = 15;
     private final int JUMP_SPEED = 20;
-    private final int JUMP_TIMER = 20;
+    private final int JUMP_TIMER = 15;
 
     private int mJumpTimer;
 

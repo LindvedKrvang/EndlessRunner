@@ -1,6 +1,7 @@
 package lindvedkrvang.endlessrunner.bll;
 
 import android.graphics.Canvas;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +47,15 @@ public class ObstacleManager implements IGameObject{
     @Override
     public void update() {
         for(Obstacle obj : mObstacles){
-            obj.move(5f);
+            obj.move(10f);
         }
 
         if(mObstacles.get(mObstacles.size()-1).getRect().right <= 0){
-            mObstacles.add(new Obstacle(mObstacleHeight, mObstacleWidth,
+            mObstacles.remove(mObstacles.size() - 1);
+            mObstacles.add(0, new Obstacle(mObstacleHeight, mObstacleWidth,
                     mObstacles.get(0).getRect().right + mObstacleGap,
                     Constants.SCREEN_HEIGHT - 150, mColor));
-            mObstacles.remove(mObstacles.size() - 1);
         }
+
     }
 }
