@@ -20,6 +20,7 @@ public class GamePlayScene implements  IScene {
     private int mJumpTimer;
 
     private GravityManager mGravityManager;
+    private ObstacleManager mObstacleManager;
 
     private Player mPlayer;
     private Point mPlayerPoint;
@@ -31,6 +32,7 @@ public class GamePlayScene implements  IScene {
 
     public GamePlayScene(){
         mGravityManager = new GravityManager();
+        mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
 
         mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
         mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
@@ -49,6 +51,8 @@ public class GamePlayScene implements  IScene {
             mPlayer.update(mPlayerPoint);
 
             playerGravity();
+
+            mObstacleManager.update();
         }
     }
 
@@ -72,7 +76,9 @@ public class GamePlayScene implements  IScene {
         canvas.drawColor(Color.WHITE);
 
         mFloor.draw(canvas);
+        mObstacleManager.draw(canvas);
         mPlayer.draw(canvas);
+
     }
 
     @Override
