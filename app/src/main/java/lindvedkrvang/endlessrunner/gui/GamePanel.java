@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.bll.GameLoopThread;
 import lindvedkrvang.endlessrunner.bll.SceneManager;
 
@@ -18,6 +19,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
         super(context);
 
         getHolder().addCallback(this);
+
+        Constants.CURRENT_CONTEXT = context;
 
         mGameLoopThread = new GameLoopThread(getHolder(), this);
 

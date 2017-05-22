@@ -15,10 +15,6 @@ public class GamePlayScene implements  IScene {
 
     private final int X_POSITION = Constants.SCREEN_WIDTH / 4;
     private final int GRAVITY_TRESHOLD = 20;
-    private final int JUMP_SPEED = 20;
-    private final int JUMP_TIMER = 15;
-
-    private int mJumpTimer;
 
     private GravityManager mGravityManager;
     private ObstacleManager mObstacleManager;
@@ -29,6 +25,7 @@ public class GamePlayScene implements  IScene {
     private Floor mFloor;
 
     private float mGravity;
+    private float mJumpStartTimer;
     private boolean mIsJumping;
     private boolean mDoubleJumpAvailable;
     private boolean mGameOver;
@@ -45,7 +42,6 @@ public class GamePlayScene implements  IScene {
 
         mFloor = new Floor(new Rect(0, 0, 0, 0), Color.BLUE);
 
-        mJumpTimer = 0;
         mGravity = 0;
         mGameOver = false;
         mIsJumping = true;
@@ -59,7 +55,7 @@ public class GamePlayScene implements  IScene {
     @Override
     public void update() {
         if(!mGameOver){
-            mPlayer.update(mPlayerPoint);
+            mPlayer.update(mPlayerPoint, mIsJumping);
 
             playerGravity();
             checkCollisionObstacle();
@@ -83,11 +79,13 @@ public class GamePlayScene implements  IScene {
             mGravity = 0;
             mIsJumping = false;
             mDoubleJumpAvailable = true;
-            mPlayerPoint.set(mPlayerPoint.x, Constants.SCREEN_HEIGHT - 101);
+            mPlayerPoint.set(mPlayerPoint.x, Constants.SCREEN_HEIGHT - 120);
         }else if(mIsJumping && mGravity < 0){
             mGravity += 1;
+            decreaseJumpStartTimer();
         }else if(mIsJumping && mGravity < GRAVITY_TRESHOLD){
             mGravity += 1.5f;
+            decreaseJumpStartTimer();
         }
 
     }
@@ -99,6 +97,7 @@ public class GamePlayScene implements  IScene {
         if(!mIsJumping) {
             mGravity = -GRAVITY_TRESHOLD;
             mIsJumping = true;
+            mJumpStartTimer = 2;
         }else if(mIsJumping && mDoubleJumpAvailable){
             mGravity = -GRAVITY_TRESHOLD;
             mDoubleJumpAvailable = false;
@@ -134,6 +133,12 @@ public class GamePlayScene implements  IScene {
                 }
                 jump();
             }
+        }
+    }
+
+    private void decreaseJumpStartTimer(){
+        if(mJumpStartTimer > 0){
+            mJumpStartTimer -= 0.5f;
         }
     }
 }
