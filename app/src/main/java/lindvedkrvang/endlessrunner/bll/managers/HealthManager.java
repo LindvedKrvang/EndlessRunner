@@ -35,11 +35,13 @@ public class HealthManager {
         canvas.drawRect(mRectHealth, paint);
     }
 
-    public void update(int damageTaken){
+    public boolean update(int damageTaken){
         if(damageTaken <= BAR_HEIGHT / HEALTH_MULTIPLIER){
             damageTaken = damageTaken * HEALTH_MULTIPLIER;
             mRectDamage.set(LEFT_COORDINATE, TOP_COORDINATE, RIGHT_COORDINATE, TOP_COORDINATE + damageTaken);
             mRectHealth.set(LEFT_COORDINATE, TOP_COORDINATE + damageTaken, RIGHT_COORDINATE, BOTTOM_COORDINATE);
+            return false;
         }
+        return true;
     }
 }

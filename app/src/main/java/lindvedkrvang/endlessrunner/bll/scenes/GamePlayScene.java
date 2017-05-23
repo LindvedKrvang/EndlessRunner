@@ -14,6 +14,7 @@ import lindvedkrvang.endlessrunner.bll.IScene;
 import lindvedkrvang.endlessrunner.bll.managers.GravityManager;
 import lindvedkrvang.endlessrunner.bll.managers.HealthManager;
 import lindvedkrvang.endlessrunner.bll.managers.ObstacleManager;
+import lindvedkrvang.endlessrunner.bll.managers.SceneManager;
 
 public class GamePlayScene implements IScene {
 
@@ -36,26 +37,10 @@ public class GamePlayScene implements IScene {
     private boolean mGameOver;
     private boolean mAllowedToJump;
 
-    private int mTempScore;
+    private int mAmountOfDamage;
 
     public GamePlayScene(){
-        mGravityManager = new GravityManager();
-        mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
-        mHealthManager = new HealthManager();
-
-        mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
-        mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
-
-        mFloor = new Floor(new Rect(0, 0, 0, 0), Color.BLUE);
-
-        mGravity = 0;
-        mGameOver = false;
-        mIsJumping = true;
-        mDoubleJumpAvailable = true;
-        mAllowedToJump = false;
-
-
-        mTempScore = 0;
+        newGame();
     }
 
     @Override
@@ -67,13 +52,16 @@ public class GamePlayScene implements IScene {
             checkCollisionObstacle();
 
             mObstacleManager.update();
-            mHealthManager.update(mTempScore);
+            if(mHealthManager.update(mAmountOfDamage)){
+                newGame();
+                SceneManager.ACTIVE_SCENE = 0;
+            }
         }
     }
 
     private void checkCollisionObstacle() {
         if(mObstacleManager.collisionWithPlayer(mPlayer.getRect())){
-            mTempScore++;
+            mAmountOfDamage++;
         }
     }
 
@@ -122,7 +110,7 @@ public class GamePlayScene implements IScene {
         Paint paint = new Paint();
         paint.setTextSize(100);
         paint.setColor(Color.BLACK);
-        canvas.drawText("Times hit: " + mTempScore, 50, 50 + paint.descent() - paint.ascent(), paint);
+        canvas.drawText("Times hit: " + mAmountOfDamage, 50, 50 + paint.descent() - paint.ascent(), paint);
 
         mHealthManager.draw(canvas);
     }
@@ -148,5 +136,25 @@ public class GamePlayScene implements IScene {
         if(mJumpStartTimer > 0){
             mJumpStartTimer -= 0.5f;
         }
+    }
+
+    private void newGame(){
+        mGravityManager = new GravityManager();
+        mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
+        mHealthManager = new HealthManager();
+
+        mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
+        mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
+
+        mFloor = new Floor(new Rect(0, 0, 0, 0), Color.BLUE);
+
+        mGravity = 0;
+        mGameOver = false;
+        mIsJumping = true;
+        mDoubleJumpAvailable = true;
+        mAllowedToJump = false;
+
+
+        mAmountOfDamage = 0;
     }
 }
