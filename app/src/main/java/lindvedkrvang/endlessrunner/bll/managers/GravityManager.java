@@ -1,7 +1,4 @@
-package lindvedkrvang.endlessrunner.bll;
-
-import android.graphics.Rect;
-import android.util.Log;
+package lindvedkrvang.endlessrunner.bll.managers;
 
 import lindvedkrvang.endlessrunner.be.Floor;
 import lindvedkrvang.endlessrunner.be.Player;

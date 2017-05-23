@@ -8,7 +8,7 @@ import android.view.SurfaceView;
 
 import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.bll.GameLoopThread;
-import lindvedkrvang.endlessrunner.bll.SceneManager;
+import lindvedkrvang.endlessrunner.bll.managers.SceneManager;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 

@@ -1,4 +1,4 @@
-package lindvedkrvang.endlessrunner.bll;
+package lindvedkrvang.endlessrunner.bll.scenes;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,14 +10,19 @@ import android.view.MotionEvent;
 import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.be.Floor;
 import lindvedkrvang.endlessrunner.be.Player;
+import lindvedkrvang.endlessrunner.bll.IScene;
+import lindvedkrvang.endlessrunner.bll.managers.GravityManager;
+import lindvedkrvang.endlessrunner.bll.managers.HealthManager;
+import lindvedkrvang.endlessrunner.bll.managers.ObstacleManager;
 
-public class GamePlayScene implements  IScene {
+public class GamePlayScene implements IScene {
 
     private final int X_POSITION = Constants.SCREEN_WIDTH / 4;
     private final int GRAVITY_TRESHOLD = 20;
 
     private GravityManager mGravityManager;
     private ObstacleManager mObstacleManager;
+    private HealthManager mHealthManager;
 
     private Player mPlayer;
     private Point mPlayerPoint;
@@ -36,6 +41,7 @@ public class GamePlayScene implements  IScene {
     public GamePlayScene(){
         mGravityManager = new GravityManager();
         mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
+        mHealthManager = new HealthManager();
 
         mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
         mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
@@ -61,6 +67,7 @@ public class GamePlayScene implements  IScene {
             checkCollisionObstacle();
 
             mObstacleManager.update();
+            mHealthManager.update(mTempScore);
         }
     }
 
@@ -117,6 +124,7 @@ public class GamePlayScene implements  IScene {
         paint.setColor(Color.BLACK);
         canvas.drawText("Times hit: " + mTempScore, 50, 50 + paint.descent() - paint.ascent(), paint);
 
+        mHealthManager.draw(canvas);
     }
 
     @Override

@@ -1,11 +1,14 @@
-package lindvedkrvang.endlessrunner.bll;
+package lindvedkrvang.endlessrunner.bll.managers;
 
 import android.graphics.Canvas;
-import android.transition.Scene;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lindvedkrvang.endlessrunner.bll.scenes.GamePlayScene;
+import lindvedkrvang.endlessrunner.bll.IScene;
+import lindvedkrvang.endlessrunner.bll.scenes.Menu;
 
 public class SceneManager {
 
@@ -17,6 +20,7 @@ public class SceneManager {
     public SceneManager(){
         ACTIVE_SCENE = 0;
         mScenes.add(new GamePlayScene());
+        mScenes.add(new Menu());
     }
 
     public void update(){
@@ -30,4 +34,5 @@ public class SceneManager {
     public void receiveTouch(MotionEvent event){
         mScenes.get(ACTIVE_SCENE).recieveTouch(event);
     }
+
 }

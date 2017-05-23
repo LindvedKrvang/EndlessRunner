@@ -1,8 +1,7 @@
-package lindvedkrvang.endlessrunner.bll;
+package lindvedkrvang.endlessrunner.bll.managers;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.List;
 import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.be.IGameObject;
 import lindvedkrvang.endlessrunner.be.Obstacle;
-import lindvedkrvang.endlessrunner.be.Player;
 
 public class ObstacleManager implements IGameObject{
 
