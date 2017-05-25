@@ -54,7 +54,7 @@ public class ObstacleManager implements IGameObject{
     @Override
     public void update() {
         for(Obstacle obj : mObstacles){
-            obj.move(OBSTACLE_SPEED);
+            obj.move(Constants.SPEED);
         }
 
         //When a obstacle leaves the screen. Reposition it on the right side of the screen.

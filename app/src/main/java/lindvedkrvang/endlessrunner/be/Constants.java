@@ -10,6 +10,8 @@ public class Constants {
     public static int MENU_SCENE = 0;
     public static int GAME_SCENE = 1;
 
+    public static float SPEED = 15f;
+
     public static Context CURRENT_CONTEXT;
 
 
