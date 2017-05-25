@@ -66,6 +66,7 @@ public class GamePlayScene implements IScene {
     public void update() {
         if(!mGameOver && !mIsPaused){
             mPlayer.update(mPlayerPoint, mIsJumping);
+            mFloor.update();
 
             playerGravity();
             checkCollisionObstacle();
@@ -192,7 +193,7 @@ public class GamePlayScene implements IScene {
         mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
         mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
 
-        mFloor = new Floor(new Rect(), Color.BLUE);
+        mFloor = new Floor(new Rect());
 
         mGravity = 0;
         mIsJumping = true;

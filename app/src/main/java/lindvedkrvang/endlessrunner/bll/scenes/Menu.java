@@ -18,7 +18,7 @@ public class Menu implements IScene {
     private Rect mTextRect;
 
     public Menu(){
-        mFloor = new Floor(new Rect(0, 0, 0, 0), Color.BLUE);
+        mFloor = new Floor(new Rect());
         mTextRect = new Rect();
     }
 
