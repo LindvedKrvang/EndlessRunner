@@ -8,7 +8,7 @@ import android.graphics.Rect;
 
 import lindvedkrvang.endlessrunner.R;
 
-public class PauseButton implements IGameObject {
+public class PauseButton{
 
     private final int WIDTH = 175;
     private final int HEIGHT = 175;
@@ -17,25 +17,25 @@ public class PauseButton implements IGameObject {
 
     private Rect mRect;
 
-    private Bitmap mImage;
+    private Bitmap mPauseImage;
+    private Bitmap mPlayImage;
 
     public PauseButton(){
         mRect = new Rect(X_COORDINATE, Y_COORDINATE, X_COORDINATE + WIDTH, Y_COORDINATE + HEIGHT);
         BitmapFactory bf = new BitmapFactory();
-        mImage = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause);
+        mPauseImage = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.pause);
+        mPlayImage = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.play);
     }
 
     public Rect getRect(){
         return mRect;
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        canvas.drawBitmap(mImage, null, mRect, new Paint());
-    }
-
-    @Override
-    public void update() {
-
+    public void draw(Canvas canvas, boolean isPaused) {
+        if(isPaused){
+            canvas.drawBitmap(mPlayImage, null, mRect, new Paint());
+        }else{
+            canvas.drawBitmap(mPauseImage, null, mRect, new Paint());
+        }
     }
 }

@@ -116,7 +116,7 @@ public class GamePlayScene implements IScene {
         mObstacleManager.draw(canvas);
         mPlayer.draw(canvas);
 
-        mPauseButton.draw(canvas);
+        mPauseButton.draw(canvas, mIsPaused);
 
         Paint paint = new Paint();
         paint.setTextSize(100);
