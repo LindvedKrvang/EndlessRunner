@@ -54,7 +54,7 @@ public class GamePlayScene implements IScene {
             mObstacleManager.update();
             if(mHealthManager.update(mAmountOfDamage)){
                 newGame();
-                SceneManager.ACTIVE_SCENE = 0;
+                SceneManager.ACTIVE_SCENE = Constants.MENU_SCENE;
             }
         }
     }

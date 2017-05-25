@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.be.Floor;
 import lindvedkrvang.endlessrunner.bll.IScene;
 import lindvedkrvang.endlessrunner.bll.managers.SceneManager;
@@ -37,7 +38,7 @@ public class Menu implements IScene {
     public void recieveTouch(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:{
-                SceneManager.ACTIVE_SCENE = 1;
+                SceneManager.ACTIVE_SCENE = Constants.GAME_SCENE;
                 break;
             }
         }

@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.bll.scenes.GamePlayScene;
 import lindvedkrvang.endlessrunner.bll.IScene;
 import lindvedkrvang.endlessrunner.bll.scenes.Menu;
@@ -18,7 +19,7 @@ public class SceneManager {
 
 
     public SceneManager(){
-        ACTIVE_SCENE = 0;
+        ACTIVE_SCENE = Constants.MENU_SCENE;
         mScenes.add(new Menu());
         mScenes.add(new GamePlayScene());
     }
