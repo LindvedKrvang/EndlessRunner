@@ -9,6 +9,9 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import lindvedkrvang.endlessrunner.R;
 import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.be.Floor;
@@ -24,6 +27,7 @@ public class GamePlayScene implements IScene {
 
     private final int X_POSITION = Constants.SCREEN_WIDTH / 4;
     private final int GRAVITY_THRESHOLD = 20;
+    private final int UPDATE_TIMER_INTERVAL = 2000;
 
     private GravityManager mGravityManager;
     private ObstacleManager mObstacleManager;
@@ -47,6 +51,11 @@ public class GamePlayScene implements IScene {
     private boolean mIsPaused;
 
     private int mAmountOfDamage;
+    private int mScore;
+
+    private boolean mIsTimerStarted;
+    private TimerTask mScoreTimerTask;
+    private Timer mScoreTimer;
 
     public GamePlayScene(){
         newGame();
@@ -64,6 +73,11 @@ public class GamePlayScene implements IScene {
             mObstacleManager.update();
             if(mHealthManager.update(mAmountOfDamage)){
                 mGameOver = true;
+            }
+
+            if(!mIsTimerStarted){
+                mScoreTimer.scheduleAtFixedRate(mScoreTimerTask, UPDATE_TIMER_INTERVAL, UPDATE_TIMER_INTERVAL);
+                mIsTimerStarted = true;
             }
         }
     }
@@ -119,9 +133,7 @@ public class GamePlayScene implements IScene {
         mPauseButton.draw(canvas, mIsPaused);
 
         Paint paint = new Paint();
-        paint.setTextSize(100);
-        paint.setColor(Color.BLACK);
-        canvas.drawText("Times hit: " + mAmountOfDamage, 50, 50 + paint.descent() - paint.ascent(), paint);
+        drawScore(canvas, paint);
 
         mHealthManager.draw(canvas);
 
@@ -129,8 +141,19 @@ public class GamePlayScene implements IScene {
             paint.setTextSize(100);
             paint.setColor(Color.WHITE);
             paint.setShadowLayer(5, 0, 0, Color.BLACK);
-            drawCenterText(canvas, paint, "Game over!", "Score: " + mAmountOfDamage);
+            drawCenterText(canvas, paint, "Game over!", "Score: " + mScore);
         }
+    }
+
+    /**
+     * Draws the score on the screen.
+     * @param canvas
+     * @param paint
+     */
+    private void drawScore(Canvas canvas, Paint paint) {
+        paint.setTextSize(100);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Score: " + mScore, 50, 50 + paint.descent() - paint.ascent(), paint);
     }
 
     @Override
@@ -148,6 +171,8 @@ public class GamePlayScene implements IScene {
                     jump();
                 }else{
                     SceneManager.ACTIVE_SCENE = Constants.MENU_SCENE;
+                    mScoreTimer.cancel();
+                    mIsTimerStarted = false;
                     newGame();
                 }
             }
@@ -178,6 +203,17 @@ public class GamePlayScene implements IScene {
         mIsPaused = false;
 
         mAmountOfDamage = 0;
+        mScore = 0;
+
+        mScoreTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if(!mGameOver && !mIsPaused)
+                    mScore++;
+            }
+        };
+        mScoreTimer = new Timer(true);
+
     }
 
     /**

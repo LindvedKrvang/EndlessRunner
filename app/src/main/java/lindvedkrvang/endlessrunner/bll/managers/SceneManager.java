@@ -35,5 +35,4 @@ public class SceneManager {
     public void receiveTouch(MotionEvent event){
         mScenes.get(ACTIVE_SCENE).recieveTouch(event);
     }
-
 }
