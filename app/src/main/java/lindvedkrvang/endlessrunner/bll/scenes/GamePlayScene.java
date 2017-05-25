@@ -1,5 +1,7 @@
 package lindvedkrvang.endlessrunner.bll.scenes;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -7,8 +9,10 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import lindvedkrvang.endlessrunner.R;
 import lindvedkrvang.endlessrunner.be.Constants;
 import lindvedkrvang.endlessrunner.be.Floor;
+import lindvedkrvang.endlessrunner.be.PauseButton;
 import lindvedkrvang.endlessrunner.be.Player;
 import lindvedkrvang.endlessrunner.bll.IScene;
 import lindvedkrvang.endlessrunner.bll.managers.GravityManager;
@@ -27,6 +31,8 @@ public class GamePlayScene implements IScene {
 
     private Rect mTextRect;
 
+    private PauseButton mPauseButton;
+
     private Player mPlayer;
     private Point mPlayerPoint;
 
@@ -35,8 +41,10 @@ public class GamePlayScene implements IScene {
     private float mGravity;
     private boolean mIsJumping;
     private boolean mDoubleJumpAvailable;
-    private boolean mGameOver;
     private boolean mAllowedToJump;
+
+    private boolean mGameOver;
+    private boolean mIsPaused;
 
     private int mAmountOfDamage;
 
@@ -47,7 +55,7 @@ public class GamePlayScene implements IScene {
 
     @Override
     public void update() {
-        if(!mGameOver){
+        if(!mGameOver && !mIsPaused){
             mPlayer.update(mPlayerPoint, mIsJumping);
 
             playerGravity();
@@ -108,6 +116,8 @@ public class GamePlayScene implements IScene {
         mObstacleManager.draw(canvas);
         mPlayer.draw(canvas);
 
+        mPauseButton.draw(canvas);
+
         Paint paint = new Paint();
         paint.setTextSize(100);
         paint.setColor(Color.BLACK);
@@ -132,7 +142,9 @@ public class GamePlayScene implements IScene {
     public void recieveTouch(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:{
-                if (!mGameOver){
+                if(mPauseButton.getRect().contains((int)event.getX(), (int)event.getY())){
+                    mIsPaused = !mIsPaused;
+                }else if (!mGameOver){
                     jump();
                 }else{
                     SceneManager.ACTIVE_SCENE = Constants.MENU_SCENE;
@@ -150,16 +162,20 @@ public class GamePlayScene implements IScene {
         mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
         mHealthManager = new HealthManager();
 
+        mPauseButton = new PauseButton();
+
         mPlayer = new Player(new Rect(0, 0, 100, 100), Color.BLACK);
         mPlayerPoint = new Point(X_POSITION, Constants.SCREEN_HEIGHT/2);
 
         mFloor = new Floor(new Rect(0, 0, 0, 0), Color.BLUE);
 
         mGravity = 0;
-        mGameOver = false;
         mIsJumping = true;
         mDoubleJumpAvailable = true;
         mAllowedToJump = false;
+
+        mGameOver = false;
+        mIsPaused = false;
 
         mAmountOfDamage = 0;
     }
