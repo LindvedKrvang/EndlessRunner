@@ -29,7 +29,7 @@ public class Menu implements IScene {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(Color.parseColor("#e5faff"));
         mFloor.draw(canvas);
         drawText(canvas, "Endless Runner", "Tap anywhere to begin");
     }

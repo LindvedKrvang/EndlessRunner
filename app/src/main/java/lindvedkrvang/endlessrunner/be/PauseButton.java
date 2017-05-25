@@ -12,8 +12,8 @@ public class PauseButton{
 
     private final int WIDTH = 175;
     private final int HEIGHT = 175;
-    private final int X_COORDINATE = (3 * Constants.SCREEN_WIDTH) / 4 ;
-    private final int Y_COORDINATE = HEIGHT / 2;
+    private final int X_COORDINATE = Constants.SCREEN_WIDTH - (int)(WIDTH * 1.5f);
+    private final int Y_COORDINATE = Constants.START_FROM_TOP;
 
     private Rect mRect;
 

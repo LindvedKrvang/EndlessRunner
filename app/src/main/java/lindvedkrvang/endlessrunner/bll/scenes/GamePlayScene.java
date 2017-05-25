@@ -125,7 +125,7 @@ public class GamePlayScene implements IScene {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawColor(Color.WHITE);
+        canvas.drawColor(Color.parseColor("#e5faff"));
 
         mFloor.draw(canvas);
         mObstacleManager.draw(canvas);
@@ -153,7 +153,8 @@ public class GamePlayScene implements IScene {
      */
     private void drawScore(Canvas canvas, Paint paint) {
         paint.setTextSize(100);
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.WHITE);
+        paint.setShadowLayer(5, 0, 0, Color.BLACK);
         canvas.drawText("Score: " + mScore, 50, 50 + paint.descent() - paint.ascent(), paint);
     }
 
