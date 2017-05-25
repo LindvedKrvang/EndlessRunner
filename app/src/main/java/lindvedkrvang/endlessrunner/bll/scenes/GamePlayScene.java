@@ -19,11 +19,13 @@ import lindvedkrvang.endlessrunner.bll.managers.SceneManager;
 public class GamePlayScene implements IScene {
 
     private final int X_POSITION = Constants.SCREEN_WIDTH / 4;
-    private final int GRAVITY_TRESHOLD = 20;
+    private final int GRAVITY_THRESHOLD = 20;
 
     private GravityManager mGravityManager;
     private ObstacleManager mObstacleManager;
     private HealthManager mHealthManager;
+
+    private Rect mTextRect;
 
     private Player mPlayer;
     private Point mPlayerPoint;
@@ -31,7 +33,6 @@ public class GamePlayScene implements IScene {
     private Floor mFloor;
 
     private float mGravity;
-    private float mJumpStartTimer;
     private boolean mIsJumping;
     private boolean mDoubleJumpAvailable;
     private boolean mGameOver;
@@ -41,6 +42,7 @@ public class GamePlayScene implements IScene {
 
     public GamePlayScene(){
         newGame();
+        mTextRect = new Rect();
     }
 
     @Override
@@ -53,12 +55,14 @@ public class GamePlayScene implements IScene {
 
             mObstacleManager.update();
             if(mHealthManager.update(mAmountOfDamage)){
-                newGame();
-                SceneManager.ACTIVE_SCENE = Constants.MENU_SCENE;
+                mGameOver = true;
             }
         }
     }
 
+    /**
+     * If the player is colliding with an obstacle, increase amountOfDamage.
+     */
     private void checkCollisionObstacle() {
         if(mObstacleManager.collisionWithPlayer(mPlayer.getRect())){
             mAmountOfDamage++;
@@ -77,10 +81,8 @@ public class GamePlayScene implements IScene {
             mPlayerPoint.set(mPlayerPoint.x, Constants.SCREEN_HEIGHT - 120);
         }else if(mIsJumping && mGravity < 0){
             mGravity += 1;
-            decreaseJumpStartTimer();
-        }else if(mIsJumping && mGravity < GRAVITY_TRESHOLD){
+        }else if(mIsJumping && mGravity < GRAVITY_THRESHOLD){
             mGravity += 1.5f;
-            decreaseJumpStartTimer();
         }
 
     }
@@ -90,11 +92,10 @@ public class GamePlayScene implements IScene {
      */
     private void jump(){
         if(!mIsJumping) {
-            mGravity = -GRAVITY_TRESHOLD;
+            mGravity = -GRAVITY_THRESHOLD;
             mIsJumping = true;
-            mJumpStartTimer = 2;
         }else if(mIsJumping && mDoubleJumpAvailable){
-            mGravity = -GRAVITY_TRESHOLD;
+            mGravity = -GRAVITY_THRESHOLD;
             mDoubleJumpAvailable = false;
         }
     }
@@ -113,6 +114,13 @@ public class GamePlayScene implements IScene {
         canvas.drawText("Times hit: " + mAmountOfDamage, 50, 50 + paint.descent() - paint.ascent(), paint);
 
         mHealthManager.draw(canvas);
+
+        if(mGameOver){
+            paint.setTextSize(100);
+            paint.setColor(Color.WHITE);
+            paint.setShadowLayer(5, 0, 0, Color.BLACK);
+            drawCenterText(canvas, paint, "Game over!", "Score: " + mAmountOfDamage);
+        }
     }
 
     @Override
@@ -124,20 +132,19 @@ public class GamePlayScene implements IScene {
     public void recieveTouch(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:{
-                if(!mIsJumping && !mGravityManager.isPlayerNotTouchingFloor(mPlayer, mFloor)){
+                if (!mGameOver){
                     jump();
+                }else{
+                    SceneManager.ACTIVE_SCENE = Constants.MENU_SCENE;
+                    newGame();
                 }
-                jump();
             }
         }
     }
 
-    private void decreaseJumpStartTimer(){
-        if(mJumpStartTimer > 0){
-            mJumpStartTimer -= 0.5f;
-        }
-    }
-
+    /**
+     * Sets the scene ready for a new game.
+     */
     private void newGame(){
         mGravityManager = new GravityManager();
         mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
@@ -154,7 +161,25 @@ public class GamePlayScene implements IScene {
         mDoubleJumpAvailable = true;
         mAllowedToJump = false;
 
-
         mAmountOfDamage = 0;
+    }
+
+    /**
+     * Takes the given text and draws it in the center of the screen.
+     * @param canvas
+     * @param paint
+     * @param textOne
+     */
+    private void drawCenterText(Canvas canvas, Paint paint, String textOne, String textTwo){
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.getClipBounds(mTextRect);
+        int cHeight = mTextRect.height();
+        int cWidth = mTextRect.width();
+        paint.getTextBounds(textOne, 0, textOne.length(), mTextRect);
+        float x = cWidth / 2f;
+        float y = cHeight / 2f - 50;
+        canvas.drawText(textOne, x, y, paint);
+        y = cHeight / 2f + 50;
+        canvas.drawText(textTwo, x, y, paint);
     }
 }
