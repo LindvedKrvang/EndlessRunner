@@ -12,8 +12,6 @@ import lindvedkrvang.endlessrunner.be.Obstacle;
 
 public class ObstacleManager implements IGameObject{
 
-    private final float OBSTACLE_SPEED = 15f;
-
     private List<Obstacle> mObstacles;
     private int mObstacleGap;
     private int mObstacleHeight;

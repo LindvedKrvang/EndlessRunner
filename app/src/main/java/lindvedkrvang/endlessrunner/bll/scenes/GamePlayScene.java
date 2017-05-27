@@ -18,6 +18,7 @@ import lindvedkrvang.endlessrunner.be.Floor;
 import lindvedkrvang.endlessrunner.be.PauseButton;
 import lindvedkrvang.endlessrunner.be.Player;
 import lindvedkrvang.endlessrunner.bll.IScene;
+import lindvedkrvang.endlessrunner.bll.managers.CloudManager;
 import lindvedkrvang.endlessrunner.bll.managers.GravityManager;
 import lindvedkrvang.endlessrunner.bll.managers.HealthManager;
 import lindvedkrvang.endlessrunner.bll.managers.ObstacleManager;
@@ -32,6 +33,7 @@ public class GamePlayScene implements IScene {
     private GravityManager mGravityManager;
     private ObstacleManager mObstacleManager;
     private HealthManager mHealthManager;
+    private CloudManager mCloudManager;
 
     private Rect mTextRect;
 
@@ -67,6 +69,7 @@ public class GamePlayScene implements IScene {
         if(!mGameOver && !mIsPaused){
             mPlayer.update(mPlayerPoint, mIsJumping);
             mFloor.update();
+            mCloudManager.update();
 
             playerGravity();
             checkCollisionObstacle();
@@ -126,6 +129,7 @@ public class GamePlayScene implements IScene {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawColor(Color.parseColor("#e5faff"));
+        mCloudManager.draw(canvas);
 
         mFloor.draw(canvas);
         mObstacleManager.draw(canvas);
@@ -188,6 +192,7 @@ public class GamePlayScene implements IScene {
         mGravityManager = new GravityManager();
         mObstacleManager = new ObstacleManager(300, 100, 100, Color.BLUE);
         mHealthManager = new HealthManager();
+        mCloudManager = new CloudManager();
 
         mPauseButton = new PauseButton();
 

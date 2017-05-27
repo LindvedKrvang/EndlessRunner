@@ -31,7 +31,7 @@ public class Floor implements IGameObject {
         mFloorImage = bf.decodeResource(Constants.CURRENT_CONTEXT.getResources(), R.drawable.floor);
 
         mRectList = new ArrayList<>();
-        for(int i = 0; i < Constants.SCREEN_WIDTH * 2; i += WIDTH){
+        for(int i = 0; i < Constants.SCREEN_WIDTH + (Constants.SCREEN_WIDTH/ 2); i += WIDTH){
             mRectList.add(new Rect(i, Y_COORDINATE, i + WIDTH, Constants.SCREEN_HEIGHT));
         }
     }
